@@ -1,0 +1,16 @@
+{
+  "name": "𝖳𝖺𝗋𝗄𝗎𝖾 𝗐𝖺𝖼𝗁𝗈",
+  "description": "𝖪𝖠𝖨-𝖬𝖣",
+  "repository": "𝗁𝗍𝗍𝗉𝗌://𝗀𝗂𝗍𝗁𝗎𝖻.𝖼𝗈𝗆/𝗁𝗂𝗆𝗍𝖾𝖼𝗁𝗀𝗎𝗒/𝖪𝖠𝖨-𝖬𝖣.",
+  "keywords": [
+    "whatsapp",
+    "baileys",
+    "bot"
+  ],
+  "env": {
+    "SESSION_ID": {
+      "description": "Put your SESSION_ID here.",
+      "required": true
+    }
+  }
+}

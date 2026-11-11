@@ -1,0 +1,63 @@
+import { fileURLToPath } from 'url'
+import fs from 'fs'
+import chalk from 'chalk'
+import 'dotenv/config'
+
+global.ownerName = '𝖳𝖺𝗋𝗄𝗎𝖾 𝗐𝖺𝖼𝗁𝗈'
+global.botName = '𝖪𝖠𝖨-𝖬𝖣'
+global.repo = '𝗁𝗍𝗍𝗉𝗌://𝗀𝗂𝗍𝗁𝗎𝖻.𝖼𝗈𝗆/𝗁𝗂𝗆𝗍𝖾𝖼𝗁𝗀𝗎𝗒/𝖪𝖠𝖨-𝖬𝖣.𝗀𝗂𝗍'
+
+global.botMessage = {
+    owner: 'This feature is for the Owner only.',
+    admin: 'This feature is for group Admins only.',
+    group: 'This command can only be used in a group.',
+    private: 'This command can only be used in a private chat.',
+    isBotAdmin: 'I need to be an admin in this group to do that.'
+}
+global.stickerPack = {
+    packname: 'ELITE-PRO-V2',
+    author: 'EliteProTech'
+}
+
+const envBoolean = (name, fallback = false) => {
+    const value = process.env[name]?.trim().toLowerCase()
+    if (value === undefined || value === '') return fallback
+    if (['true', '1', 'yes', 'on'].includes(value)) return true
+    if (['false', '0', 'no', 'off'].includes(value)) return false
+    return fallback
+}
+
+const envEmojis = (name, fallback) => {
+    const emojis = process.env[name]
+        ?.split(',')
+        .map(emoji => emoji.trim())
+        .filter(Boolean)
+        .slice(0, 20)
+    return emojis?.length ? emojis : fallback
+}
+
+const envChoice = (name, choices, fallback) => {
+    const value = process.env[name]?.trim().toLowerCase()
+    return choices.includes(value) ? value : fallback
+}
+
+global.settingsDefaults = {
+    chatbotMode: envChoice('CHATBOT_MODE', ['off', 'dm', 'group', 'all', 'mention'], 'off'),
+    autoViewStatus: envBoolean('AUTO_VIEW_STATUS'),
+    autoLikeStatus: envBoolean('AUTO_LIKE_STATUS'),
+    autoLikeStatusEmojis: envEmojis('AUTO_LIKE_STATUS_EMOJIS', ['💚']),
+    autoReact: envBoolean('AUTO_REACT'),
+    autoReactEmojis: envEmojis('AUTO_REACT_EMOJIS', ['💚']),
+    autoRead: envBoolean('AUTO_READ'),
+    autoRecording: envBoolean('AUTO_RECORDING'),
+    autoTyping: envBoolean('AUTO_TYPING'),
+    autoRecordType: envBoolean('AUTO_RECORD_TYPE')
+}
+
+const file = fileURLToPath(import.meta.url)
+global.session = process.env.SESSION_ID || ''
+fs.watchFile(file, () => {
+    fs.unwatchFile(file)
+    console.log(chalk.redBright(`Update 'config.js'`))
+    import(`${file}?update=${Date.now()}`)
+})
